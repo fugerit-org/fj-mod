@@ -1,0 +1,287 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>org.fugerit.java</groupId>
+	<artifactId>fj-sample-mod-web</artifactId>
+	<packaging>war</packaging>
+	<version>0.1.0.0</version>
+
+	<name>fj-daogen-quickstart</name>
+	<description>fj-daogen-quickstart</description>
+
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<java-version-compliance>1.8</java-version-compliance>
+		<j2ee-version-compliance>7.0</j2ee-version-compliance>
+		<maven.compiler.source>${java-version-compliance}</maven.compiler.source>
+		<maven.compiler.target>${java-version-compliance}</maven.compiler.target>
+		<fj-version>0.7.4.8</fj-version>
+		<fj-mod-version>${project.version}</fj-mod-version>
+		<junit-version>4.12</junit-version>
+		<hsqldb-version>2.3.4</hsqldb-version>
+		<slf4j-version>1.7.26</slf4j-version>
+		<log4j-version>1.2.17</log4j-version>
+	</properties>
+
+	<build>
+
+		<plugins>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>3.2.3</version>
+			</plugin>
+	
+		</plugins>
+
+	</build>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>javaee-api</artifactId>
+			<version>${j2ee-version-compliance}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.fugerit.java</groupId>
+			<artifactId>fj-mod-dir-map</artifactId>
+			<version>${fj-mod-version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.fugerit.java</groupId>
+			<artifactId>fj-mod-img-helper</artifactId>
+			<version>${fj-mod-version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.fugerit.java</groupId>
+			<artifactId>fj-core</artifactId>
+			<version>${fj-version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+			<version>${hsqldb-version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j-version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<version>${slf4j-version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>${slf4j-version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit-version}</version>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
+
+	<organization>
+		<url>http://www.fugerit.org</url>
+		<name>Fugerit</name>
+	</organization>
+
+	<url>http://www.fugerit.org/java/</url>
+
+	<profiles>
+
+		<profile>
+			<id>wlp</id>
+			
+			<properties>
+				<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+				<war-name>${project.artifactId}-${project.version}</war-name>
+				<war-folder>${project.build.directory}/${war-name}</war-folder>
+				<wlp-version>20.0.0.5</wlp-version>
+				<wlp-maven-version>3.0.M1</wlp-maven-version>
+				<packaging.type>minify,runnable</packaging.type>
+				<freemarker-maven-plugin-version>1.0.3</freemarker-maven-plugin-version>
+			</properties>			
+			
+			<build>
+				<plugins>
+
+					 <plugin>
+				        <groupId>org.fugerit.java</groupId>
+				        <artifactId>freemarker-maven-plugin</artifactId>
+				        <version>${freemarker-maven-plugin-version}</version>
+				        <configuration>
+				          <!-- Required. Specifies the compatibility version for template processing -->
+				          <freeMarkerVersion>2.3.23</freeMarkerVersion>
+				        </configuration>
+				        <executions>
+				          <!-- If you want to generate files during other phases, just add more execution
+				               tags and specify appropriate phase, sourceDirectory and outputDirectory values.
+				          -->
+				          <execution>
+				            <id>freemarker</id>
+				            <!-- Optional, defaults to generate-sources -->
+				            <phase>generate-sources</phase>
+				            <goals>
+				              <!-- Required, must be generate -->
+				              <goal>generate</goal>
+				            </goals>
+				            <configuration>
+				              <!-- Optional, defaults to src/main/freemarker -->
+				              <sourceDirectory>src/main/freemarker</sourceDirectory>
+				              <!-- Optional, defaults to src/main/freemarker/template -->
+				              <templateDirectory>src/main/freemarker/template</templateDirectory>
+				              <!-- Optional, defaults to src/main/freemarker/generator -->
+				              <generatorDirectory>src/main/freemarker/generator</generatorDirectory>
+				              <!-- Optional, defaults to target/generated-sources/freemarker -->
+				              <outputDirectory>target/generated-sources/freemarker</outputDirectory>
+				            </configuration>
+				          </execution>
+				        </executions>
+				      </plugin>
+		
+		            <plugin>
+		                <groupId>net.wasdev.wlp.maven.plugins</groupId>
+		                <artifactId>liberty-maven-plugin</artifactId>
+		                <version>${wlp-maven-version}</version>
+		                <configuration>
+		                    <assemblyArtifact>
+		                        <groupId>com.ibm.websphere.appserver.runtime</groupId>
+		                        <artifactId>wlp-webProfile7</artifactId>
+		                        <version>${wlp-version}</version>
+		                        <type>zip</type>
+		                    </assemblyArtifact>
+		                    <serverName>${project.artifactId}Server</serverName>
+		                    <configFile>target/generated-sources/freemarker/server.xml</configFile>
+		                    <include>${packaging.type}</include>
+		                </configuration>
+		            </plugin>
+		            
+		            <plugin>
+		                <groupId>org.apache.maven.plugins</groupId>
+		                <artifactId>maven-failsafe-plugin</artifactId>
+		                <version>2.19.1</version>
+		                <executions>
+		                    <execution>
+		                        <goals>
+		                            <goal>integration-test</goal>
+		                            <goal>verify</goal>
+		                        </goals>
+		                    </execution>
+		                </executions>
+		            </plugin>
+
+				</plugins>
+			</build>
+		</profile>
+
+		<profile>
+			<id>daogen</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.fugerit.java</groupId>
+						<artifactId>fj-daogen-maven-plugin</artifactId>
+						<configuration>
+							<daogen.config>${project.basedir}/src/main/resources/daogen/daogen-config.xml</daogen.config>
+						</configuration>						
+						<executions>
+							<execution>
+								<phase>compile</phase>
+								<goals>
+									<goal>generate</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+		<profile>
+			<id>daogendump</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.fugerit.java</groupId>
+						<artifactId>fj-daogen-maven-plugin</artifactId>
+						<configuration>
+							<daogen.config.dump>${project.basedir}/target/daogen-config-dump.xml</daogen.config.dump>
+						</configuration>						
+						<executions>
+							<execution>
+								<phase>compile</phase>
+								<goals>
+									<goal>dump</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+		<profile>
+			<id>full</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-source-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>attach-sources</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<configuration>
+							<stylesheetfile>src/main/javadoc/stylesheet.css</stylesheetfile>
+						</configuration>
+						<executions>
+							<execution>
+								<id>attach-javadocs</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+	</profiles>
+
+</project>

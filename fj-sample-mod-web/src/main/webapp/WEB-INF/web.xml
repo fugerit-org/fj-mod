@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_1.xsd"
+	version="3.1">
+
+	<display-name>fj-sample-mod-web</display-name>
+
+	<servlet>
+		<description />
+		<display-name>ImageHelperServlet</display-name>
+		<servlet-name>ImageHelperServlet</servlet-name>
+		<servlet-class>org.fugerit.java.mod.imghelper.ImageHelperServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>ImageHelperServlet</servlet-name>
+		<url-pattern>/img/*</url-pattern>
+	</servlet-mapping>	
+
+	<servlet>
+		<description />
+		<display-name>DirectoryMapServlet</display-name>
+		<servlet-name>DirectoryMapServlet</servlet-name>
+		<servlet-class>org.fugerit.java.mod.dirmap.DirectoryMapServlet</servlet-class>
+		<init-param>
+			<param-name>dir-map-config</param-name>
+			<param-value>WEB-INF/dir-map-config.xml</param-value>
+		</init-param>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>DirectoryMapServlet</servlet-name>
+		<url-pattern>/map/*</url-pattern>
+	</servlet-mapping>		
+	
+
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+
+</web-app>

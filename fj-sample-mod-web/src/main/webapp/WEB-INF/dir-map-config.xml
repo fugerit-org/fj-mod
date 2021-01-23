@@ -1,0 +1,10 @@
+<dir-map-config>
+
+	<general-config
+		allow-listing="1"
+		exclude-path="/map" 
+		directory-map-path="/"
+		image-base-url="/img/"
+		/>
+
+</dir-map-config>

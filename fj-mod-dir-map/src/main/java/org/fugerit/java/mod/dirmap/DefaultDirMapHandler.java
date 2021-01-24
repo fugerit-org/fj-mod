@@ -15,19 +15,6 @@ import org.fugerit.java.core.io.StreamIO;
 import org.fugerit.java.core.log.LogFacade;
 import org.w3c.dom.Element;
 
-/**
- * <p>
- *	<jdl:section>
- * 		<jdl:text lang='it'>
- * 		</jdl:text>
- * 		<jdl:text lang='en'>
- * 		</jdl:text>  
- *	</jdl:section>
- * </p>
- *
- * @author Morozko
- *
- */
 public class DefaultDirMapHandler extends XMLConfigurableObject implements DirMapHandler {
 
 	/**
@@ -91,19 +78,23 @@ public class DefaultDirMapHandler extends XMLConfigurableObject implements DirMa
 						PrintWriter pw = new PrintWriter( response.getOutputStream(), true );
 						String baseLink = request.getContextPath()+dirMapConfig.getExcludePath()+"/";
 						File parent = file.getParentFile();
-						String parsentUri = parent.toURI().toString();
-						String parentLink = baseLink+parsentUri.substring( rootUri.length() );
+						String parentLink = null;
+						if ( parent != null ) {
+							String parsentUri = null;
+							parsentUri = parent.toURI().toString();
+							parentLink = baseLink+parsentUri.substring( rootUri.length() ); 
+						}
 						pw.println( "<html>" );
 						pw.println( "<head><title>Directory listing : "+filePath+"</title></head>" );
 						pw.println( "<body>" );
 						pw.println( "<table>" );
-						if ( !flagRoot ) {
-							pw.println( "<tr><td><img src='"+request.getContextPath()+dirMapConfig.getImageBaseUrl()+"back.png'/></td><td><a href='"+parentLink+"'>...</a></td></tr>" );	
+						if ( !flagRoot && parentLink != null ) {
+							pw.println( "<tr><td><img src='"+request.getContextPath()+dirMapConfig.getImageBaseUrl()+"blank.png'/></td><td><a href='"+parentLink+"'>...</a></td></tr>" );	
 						}
 						for ( int k=0; k<list.length; k++ ) {
 							String currentUri = ( new File( file, list[k]) ).toURI().toString();
 							String link = baseLink+currentUri.substring( rootUri.length() );
-							pw.println( "<tr><td><img src='"+request.getContextPath()+dirMapConfig.getImageBaseUrl()+"compressed.png'/></td><td><a href='"+link+"'>"+list[k]+"</a></td></tr>" );	
+							pw.println( "<tr><td><img src='"+request.getContextPath()+dirMapConfig.getImageBaseUrl()+"file.png'/></td><td><a href='"+link+"'>"+list[k]+"</a></td></tr>" );	
 						}
 						pw.println( "</table>" );
 						pw.println( "</body>" );
